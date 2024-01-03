@@ -6,8 +6,8 @@ CREATE TABLE roles (
     id INT auto_increment,
     role_name VARCHAR(20),
     created_at TIMESTAMP,
-    PRIMARY KEY(id),
-)
+    PRIMARY KEY(id)
+);
 
 CREATE TABLE user(
     id INT auto_increment,
@@ -38,7 +38,7 @@ CREATE TABLE category (
     created_at TIMESTAMP,
 
 PRIMARY KEY(id)
-)
+);
 
 CREATE TABLE food (
     id INT auto_increment,
@@ -110,7 +110,7 @@ CREATE TABLE order_item(
     PRIMARY KEY(order_id, food_id)
 );
 
-ALTER TABLE users ADD constraint fk_user_role_id FOREIGN KEY(role_id) REFERENCES roles(id);
+ALTER TABLE user ADD constraint fk_user_role_id FOREIGN KEY(role_id) REFERENCES roles(id);
 ALTER TABLE ratings ADD constraint fk_ratings_user_id FOREIGN KEY(user_id) REFERENCES user(id);
 ALTER TABLE ratings ADD constraint fk_ratings_food_id FOREIGN KEY(food_id) REFERENCES food(id);
 ALTER TABLE food ADD constraint fk_ratings_cate_id FOREIGN KEY(cate_id) REFERENCES category(id);

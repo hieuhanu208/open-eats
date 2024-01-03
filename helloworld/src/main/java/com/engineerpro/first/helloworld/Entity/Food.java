@@ -22,6 +22,16 @@ public class Food {
     private Category category;
     @OneToMany(mappedBy = "food")
     private Set<Rating> listRating;
+    @OneToMany(mappedBy = "food")
+    private  Set<OrderItem> listOrderItem;
+
+    public Set<OrderItem> getListOrderItem() {
+        return listOrderItem;
+    }
+
+    public void setListOrderItem(Set<OrderItem> listOrderItem) {
+        this.listOrderItem = listOrderItem;
+    }
 
     public Set<Rating> getListRating() {
         return listRating;

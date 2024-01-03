@@ -23,6 +23,26 @@ public class User {
     private Roles roles;
     @OneToMany(mappedBy = "user")
     private Set<Rating> listRating;
+    @OneToMany(mappedBy = "user")
+    private  Set<RatingRestaurant> listRatingRestaurant;
+    @OneToMany(mappedBy = "user")
+    private  Set<Order> listOrder;
+
+    public Set<RatingRestaurant> getListRatingRestaurant() {
+        return listRatingRestaurant;
+    }
+
+    public Set<Order> getListOrder() {
+        return listOrder;
+    }
+
+    public void setListOrder(Set<Order> listOrder) {
+        this.listOrder = listOrder;
+    }
+
+    public void setListRatingRestaurant(Set<RatingRestaurant> listRatingRestaurant) {
+        this.listRatingRestaurant = listRatingRestaurant;
+    }
 
     public Set<Rating> getListRating() {
         return listRating;
