@@ -1,6 +1,7 @@
 package com.engineerpro.first.helloworld.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,16 @@ public class Roles {
 
     @Column(name = "role_name")
     private String roleName;
-    @Column(name = "create_date")
-    private Date createDate;
+    @Column(name = "created_at")
+    private Date createAt;
 
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
     @OneToMany(mappedBy = "roles")
     private Set<User> listUser;
 
@@ -38,11 +46,4 @@ public class Roles {
         this.roleName = roleName;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
 }

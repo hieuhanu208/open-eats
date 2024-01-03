@@ -1,5 +1,6 @@
 package com.engineerpro.first.helloworld.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;
+
     @OneToMany(mappedBy = "user")
     private Set<Rating> listRating;
     @OneToMany(mappedBy = "user")
