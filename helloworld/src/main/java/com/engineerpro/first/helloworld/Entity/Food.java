@@ -2,6 +2,8 @@ package com.engineerpro.first.helloworld.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity(name = "food")
 public class Food {
     @Id
@@ -18,6 +20,16 @@ public class Food {
     @ManyToOne
     @JoinColumn(name = "cate_id")
     private Category category;
+    @OneToMany(mappedBy = "food")
+    private Set<Rating> listRating;
+
+    public Set<Rating> getListRating() {
+        return listRating;
+    }
+
+    public void setListRating(Set<Rating> listRating) {
+        this.listRating = listRating;
+    }
 
     public int getId() {
         return id;

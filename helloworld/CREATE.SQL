@@ -25,7 +25,7 @@ CREATE TABLE ratings (
     id INT auto_increment,
     user_id INT,
     food_id INT,
-    content_id TEXT,
+    content TEXT,
     rate_point INT(5),
 
     PRIMARY KEY(id)

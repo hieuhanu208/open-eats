@@ -3,6 +3,7 @@ package com.engineerpro.first.helloworld.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity(name = "user")
 public class User {
@@ -20,6 +21,16 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;
+    @OneToMany(mappedBy = "user")
+    private Set<Rating> listRating;
+
+    public Set<Rating> getListRating() {
+        return listRating;
+    }
+
+    public void setListRating(Set<Rating> listRating) {
+        this.listRating = listRating;
+    }
 
     public int getId() {
         return id;

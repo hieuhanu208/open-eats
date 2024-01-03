@@ -2,6 +2,8 @@ package com.engineerpro.first.helloworld.Entity;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.Date;
