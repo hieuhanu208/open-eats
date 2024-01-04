@@ -13,7 +13,8 @@ import java.util.List;
 public class LoginService {
     @Autowired
     UserInterface userInterface;
-    public List<UserDto> getAllUsers(){
+
+    public List<UserDto> getAllUsers() {
         List<User> listUser = userInterface.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : listUser) {
@@ -25,5 +26,6 @@ public class LoginService {
             userDtoList.add(userDto);
         }
         return userDtoList;
+
     }
 }

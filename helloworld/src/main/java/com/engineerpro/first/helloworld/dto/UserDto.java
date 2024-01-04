@@ -1,51 +1,46 @@
 package com.engineerpro.first.helloworld.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
-    private int id;
-    private String user_name;
+    @JsonProperty("fullname")
+    private String fullName;
+
+    @JsonProperty("phone_number")
+    @NotBlank(message = "Phone number is required")
+    private String phoneNumber;
+
+    private String address;
+
+    @NotBlank(message = "Password cannot be blank")
     private String password;
-    private String full_name;
-    private Date created_at;
 
-    public int getId() {
-        return id;
-    }
+    @JsonProperty("retype_password")
+    private String retypePassword;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @JsonProperty("date_of_birth")
+    private Date dateOfBirth;
 
-    public String getUser_name() {
-        return user_name;
-    }
+    @JsonProperty("facebook_account_id")
+    private int facebookAccountId;
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
+    @JsonProperty("google_account_id")
+    private int googleAccountId;
 
-    public String getPassword() {
-        return password;
-    }
+    @NotNull(message = "Role ID is required")
+    @JsonProperty("role_id")
+    private Long roleId;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public String getFull_name() {
-        return full_name;
-    }
-
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
 }
