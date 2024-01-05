@@ -11,9 +11,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-  server:
-    port: 8089
+        format_sql: true
+server:
+  port: 8089
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  jwt:
+    expiration:259200
+api:
+  prefix: api/v1
