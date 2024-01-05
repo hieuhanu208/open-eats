@@ -1,4 +1,4 @@
-package com.engineerpro.first.helloworld.Controller;
+package com.engineerpro.first.helloworld.controller;
 
 import com.engineerpro.first.helloworld.dto.CategoryDTO;
 import com.engineerpro.first.helloworld.model.Category;

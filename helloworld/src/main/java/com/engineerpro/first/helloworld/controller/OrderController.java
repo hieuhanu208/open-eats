@@ -1,4 +1,4 @@
-package com.engineerpro.first.helloworld.Controller;
+package com.engineerpro.first.helloworld.controller;
 
 import com.engineerpro.first.helloworld.dto.OrderDTO;
 import org.springframework.http.ResponseEntity;

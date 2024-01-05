@@ -1,6 +1,6 @@
-package com.engineerpro.first.helloworld.Controller;
+package com.engineerpro.first.helloworld.controller;
 
-import com.engineerpro.first.helloworld.dto.UserDto;
+import com.engineerpro.first.helloworld.dto.UserDTO;
 import com.engineerpro.first.helloworld.dto.UserLoginDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/users")
 public class UserController {
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto, BindingResult result) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();

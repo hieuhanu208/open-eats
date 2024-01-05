@@ -1,4 +1,4 @@
-package com.engineerpro.first.helloworld.Controller;
+package com.engineerpro.first.helloworld.controller;
 
 import com.engineerpro.first.helloworld.dto.ProductDTO;
 import org.springframework.http.HttpStatus;
@@ -9,10 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
