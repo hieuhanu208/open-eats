@@ -1,10 +1,7 @@
 package com.engineerpro.first.helloworld.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "products")
