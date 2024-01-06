@@ -2,6 +2,8 @@ package com.engineerpro.first.helloworld.controller;
 
 import com.engineerpro.first.helloworld.dto.UserDTO;
 import com.engineerpro.first.helloworld.dto.UserLoginDTO;
+import com.engineerpro.first.helloworld.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,7 +18,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/users")
+@RequiredArgsConstructor
 public class UserController {
+    private UserService userService;
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDto, BindingResult result) {
         try {
@@ -35,6 +39,7 @@ public class UserController {
     }
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLoginDTO) {
+        String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
         return ResponseEntity.ok("token");
     }
 }

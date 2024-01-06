@@ -5,7 +5,6 @@ import com.engineerpro.first.helloworld.model.Category;
 import com.engineerpro.first.helloworld.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class CategoryService implements CategoryServiceImpl {
      * @return
      */
     @Override
-    public Category updateCategory(long categoryId, @RequestBody  CategoryDTO category) {
+    public Category updateCategory(long categoryId, CategoryDTO category) {
         Category existingCategory = getCategoryById(categoryId);
         existingCategory.setName(category.getName());
         categoryRepository.save(existingCategory);
