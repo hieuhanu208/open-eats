@@ -109,7 +109,7 @@ public class ProductService implements ProductServiceImpl {
 
     public ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws DataNotFoundException, InvalidParamException {
         Product existProduct =  productRepository
-                .findById(productImageDTO.getProductId())
+                .findById(productId)
                 .orElseThrow(() -> new DataNotFoundException("Can not found category id:" + productImageDTO.getProductId()));
         ProductImage newProductImage = ProductImage.builder()
                 .product(existProduct).imageUrl(productImageDTO.getImageUrl()).build();
