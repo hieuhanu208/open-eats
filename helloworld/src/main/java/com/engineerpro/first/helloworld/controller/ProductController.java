@@ -4,8 +4,13 @@ import com.engineerpro.first.helloworld.dto.ProductDTO;
 import com.engineerpro.first.helloworld.dto.ProductImageDTO;
 import com.engineerpro.first.helloworld.model.Product;
 import com.engineerpro.first.helloworld.model.ProductImage;
+import com.engineerpro.first.helloworld.response.ProductListResponse;
+import com.engineerpro.first.helloworld.response.ProductResponse;
 import com.engineerpro.first.helloworld.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +28,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -32,15 +38,20 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<?> getProducts(
+    public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam("page") int page,
             @RequestParam("limit") int limit
     ) {
-        return ResponseEntity.ok("getProduct here");
+        PageRequest pageRequest = PageRequest.of(page,limit, Sort.by("createdAt").descending());
+        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
+        int totalPages = productPage.getTotalPages();
+        List<ProductResponse> products =  productPage.getContent();
+        return ResponseEntity.ok(ProductListResponse.builder().products(products).totalPages(totalPages).build());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<String> getProductById(@PathVariable("id") String productId) {
+
         return ResponseEntity.ok("Product ID:" + productId);
     }
 
@@ -76,6 +87,9 @@ public class ProductController {
         try {
             Product existingProduct = productService.getProductById(productId);
             files = files == null ? new ArrayList<MultipartFile>() : files;
+            if (files.size() > ProductImage.MAX_IMAGE_PER_PRODUCT) {
+                return ResponseEntity.badRequest().body("Images upload not > 5");
+            }
             List<ProductImage> productImages = new ArrayList<>();
             for (MultipartFile file : files) {
                 if (file.getSize() == 0) {
@@ -103,10 +117,19 @@ public class ProductController {
         }
     }
 
+    public boolean isImageFile(MultipartFile file){
+        String contentType = file.getContentType();
+        return contentType !=null && contentType.startsWith("image/");
+    }
+
+
     public String storeFile(MultipartFile file) throws IOException {
+        if (!isImageFile(file) || file.getOriginalFilename() == null ){
+            throw new IOException("Invalid format");
+        }
 
         String fileName = "";
-        fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+        fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Path uploadDir = Paths.get("uploads");
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);

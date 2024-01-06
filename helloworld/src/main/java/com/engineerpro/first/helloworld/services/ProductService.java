@@ -10,6 +10,7 @@ import com.engineerpro.first.helloworld.model.ProductImage;
 import com.engineerpro.first.helloworld.repositories.CategoryRepository;
 import com.engineerpro.first.helloworld.repositories.ProductImageRepository;
 import com.engineerpro.first.helloworld.repositories.ProductRepository;
+import com.engineerpro.first.helloworld.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,16 +33,16 @@ public class ProductService implements ProductServiceImpl {
      */
     @Override
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
-          Category existCate =  categoryRepository
-                    .findById(productDTO.getCategoryId())
-                    .orElseThrow(() -> new DataNotFoundException("Can not found category id:" + productDTO.getCategoryId()));
-          Product newProduct = Product.builder()
-                  .name(productDTO.getName())
-                  .price(productDTO.getPrice())
-                  .thumbnail(productDTO.getThumbnail())
-                  .category(existCate)
-                  .build();
-          return productRepository.save(newProduct);
+        Category existCate = categoryRepository
+                .findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new DataNotFoundException("Can not found category id:" + productDTO.getCategoryId()));
+        Product newProduct = Product.builder()
+                .name(productDTO.getName())
+                .price(productDTO.getPrice())
+                .thumbnail(productDTO.getThumbnail())
+                .category(existCate)
+                .build();
+        return productRepository.save(newProduct);
     }
 
     /**
@@ -60,8 +61,18 @@ public class ProductService implements ProductServiceImpl {
      * @return
      */
     @Override
-    public Page<Product> getAllProducts(PageRequest pageRequest) {
-        return productRepository.findAll(pageRequest);
+    public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
+        return productRepository.findAll(pageRequest).map(product -> {
+            ProductResponse productResponse = ProductResponse.builder()
+                    .name(product.getName())
+                    .price(product.getPrice())
+                    .thumbnail(product.getThumbnail())
+                    .description(product.getDescription())
+                    .build();
+            productResponse.setCreatedAt(product.getCreatedAt());
+            productResponse.setUpdatedAt(product.getUpdatedAt());
+            return productResponse;
+        });
     }
 
 
@@ -74,7 +85,7 @@ public class ProductService implements ProductServiceImpl {
     @Override
     public Product updateProduct(long id, ProductDTO productDTO) throws Exception {
         Product existProduct = getProductById(id);
-        Category existCate =  categoryRepository
+        Category existCate = categoryRepository
                 .findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new DataNotFoundException("Can not found category id:" + productDTO.getCategoryId()));
         existProduct.setName(productDTO.getName());
@@ -85,7 +96,7 @@ public class ProductService implements ProductServiceImpl {
         if (existProduct != null) {
             return productRepository.save(existProduct);
         }
-       return null;
+        return null;
     }
 
     /**
@@ -93,8 +104,8 @@ public class ProductService implements ProductServiceImpl {
      */
     @Override
     public void deleteProduct(long id) {
-       Optional<Product>  existProduct =  productRepository.findById(id);
-       existProduct.ifPresent(productRepository::delete);
+        Optional<Product> existProduct = productRepository.findById(id);
+        existProduct.ifPresent(productRepository::delete);
 
     }
 
@@ -108,14 +119,14 @@ public class ProductService implements ProductServiceImpl {
     }
 
     public ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws DataNotFoundException, InvalidParamException {
-        Product existProduct =  productRepository
+        Product existProduct = productRepository
                 .findById(productId)
                 .orElseThrow(() -> new DataNotFoundException("Can not found category id:" + productImageDTO.getProductId()));
         ProductImage newProductImage = ProductImage.builder()
                 .product(existProduct).imageUrl(productImageDTO.getImageUrl()).build();
         //Limit 5 images/product
         int size = productImageRepository.findByProductId(productId).size();
-        if (size >=5) {
+        if (size >= ProductImage.MAX_IMAGE_PER_PRODUCT) {
             throw new InvalidParamException("Not allowed more than 5 pictures!!");
         }
         return productImageRepository.save(newProductImage);
